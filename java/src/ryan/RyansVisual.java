@@ -1,22 +1,20 @@
 package ryan;
 
-import ddf.minim.AudioBuffer;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
+
 import ie.tudublin.*;
+import processing.core.PApplet;
+import ddf.minim.*;
+import ddf.minim.analysis.FFT;
 
 public class RyansVisual extends Visual{
 
   SphereCircle sc;
 
-  Minim minim; //connecting to the minim libraries
-  AudioInput ai; //connectig to AI libraries
-  AudioPlayer ap; //connecting to the ap libraries
-  AudioBuffer ab; //the samples
 
-  float[] lerpedBuffer;
   int which = 0;
+  boolean[] keyP = new boolean[1024];
+  float lerpedBuffer[];
+
 
   float angle = 0; //angle of spin
   //for changing stroke colour
@@ -37,64 +35,41 @@ public class RyansVisual extends Visual{
 
     public void setup()
     {
-        sc = new SphereCircle(this);
         startMinim();
-        minim = new Minim(this);
-        ap = minim.loadFile("heroplanet.mp3", width);
-        ap.play();
-        ab = ap.mix;
-        colorMode(HSB);
-        lerpedBuffer = new float[width];
-       
-       
-        //strokeWeight(15);
-        
-    
-        
+        loadAudio("heroplanet.mp3");
+       // colorMode(HSB);
 
-
-       startListening();
+        sc = new SphereCircle(this);
+     
        
    }
   
 
 public void keyPressed() {
-    if (keyCode >= '0' && keyCode <= '6') {
-        which = keyCode - '0';
-    }
-    if (keyCode == ' ') {
-        if (ap.isPlaying()) {
-            ap.pause();
-        } else {
-            ap.rewind();
-            ap.play();
-        }
-        if (keyCode == UP)
-        {
-            colour = ! colour;
-        }
-    }
-}
+   
+    if (key == ' ') {
 
-    float lerpedAverage =0;
-    private  boolean colour = false;
+        getAudioPlayer().cue(0); 
+        getAudioPlayer().play();
+    }
+    else if (keyCode >= '0' && keyCode <= '6')
+    {
+          which = keyCode -'0';
+          keyP[keyCode] = true ; 
+    }
+        
+    }
+
+
 
 
    public void draw()
    {
     background(0);
-  
-    float sum =0;
-    float average =0;
+    fill(255);
+ 
 
-            // Calculate the average of the buffer
-            for (int i = 0; i < ab.size(); i ++)
-            {
-                sum += abs(ab.get(i));
-            }
-            average = sum / ab.size();
-            // Move lerpedAverage 10% closer to average every frame
-            lerpedAverage = lerp(lerpedAverage, average, 0.1f);
+           
        /* try
         {
             // Call this if you want to use FFT data
@@ -122,16 +97,16 @@ public void keyPressed() {
         translate(width/2, height/2); //move the 0,0 position to the center of the screen so w/2, h/2
         rotate(radians(-angle)); //rotate negative so it rotates the direction I want
     
-        for(int j = 0; j< ab.size(); j++){ //for loop through the total size of the audio buffer, used for expanding arc lines
+        for(int j = 0; j< getAudioBuffer().size(); j++){ //for loop through the total size of the audio buffer, used for expanding arc lines
             for(int i = gap; i< width-gap; i+= gap){ //used to create the maximum size the spiral can become
                 //Colour formatting
-                float c = map(i, 0, ab.size(), 0, 255);
+                float c = map(i, 0, getAudioBuffer().size(), 0, 255);
                 stroke(c, 255, 255);
                           
     
                 //angle of the arcs and the lerped buffer given it's value which will constantly change depending on music frequency buffer size
                 float angle = radians(i);
-                lerpedBuffer[j]  = lerp(lerpedBuffer[j], ab.get(j), 0.1f); 
+                lerpedBuffer[j]  = lerp(lerpedBuffer[j], getAudioBuffer().get(j), 0.1f); 
     
                 //arc starting at 0,0 so middle of the screen after the translate and the final value is using lerped buffer to let the arc length change
                 arc(0, 0, i, i, angle, angle + (lerpedBuffer[j]  * 5));
@@ -151,18 +126,18 @@ public void keyPressed() {
        {
            
            strokeWeight(25);
-        for (int i = 0; i < ab.size(); i++) {
+        for (int i = 0; i < getAudioBuffer().size(); i++) {
 
-            float c = map(i, 0, ab.size(), 0, 255);
+            float c = map(i, 0, getAudioBuffer().size(), 0, 255);
             stroke(c, 0, 120);
-            lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);        
+            lerpedBuffer[i] = lerp(lerpedBuffer[i], getAudioBuffer().get(i), 0.1f);        
             line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, i, halfHeight + lerpedBuffer[i] * halfHeight * 4);
         }        
         break;
         }
         case 2:
         {
-            sc.render();
+           // sc.render();
             break;
         }
           

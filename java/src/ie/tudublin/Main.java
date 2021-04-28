@@ -1,9 +1,7 @@
 package ie.tudublin;
 
-import example.CubeVisual;
 import example.CubeVisual1;
 import example.MyVisual;
-import example.RotatingAudioBands;
 import ryan.RyansVisual;
 
 public class Main
@@ -15,11 +13,6 @@ public class Main
         processing.core.PApplet.runSketch( a, new RyansVisual());		
 	}
 
-	public void cube()
-	{
-		String[] a = {"MAIN"};
-        processing.core.PApplet.runSketch( a, new CubeVisual());		
-	}
 
 	public void cube2()
 	{
