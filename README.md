@@ -16,6 +16,8 @@ For my assignment I decided to try and implement as much as I could of what Brya
 # Instructions
 To use my assignment the user is displayed with a screen. The user must then push the space bar to start the music and then can scroll through all of my visuals using the numbers 1-7.
 
+MY FINISHED ASSIGNMENT IS ON BRANCH 'COMPLETE' !!!!
+
 # How it works
 I used a lot of polymorphism to complete my assignment. I incorporated a separate vision class to allow all of my files to be accessed in the the RyansVisuals file. This allows me to simple call each file from that file instead of having to clump up all of my code into one switch in the RyansVisual file. This incorpotates neatness and also was great help in identifying visuals which had errors. The project links my visuals to an audio file and reacts based on things such as the audio buffer size, the amplitude and the sample size of the audio in my attempt to create as smooth an experience for the viewer. I tried my best to have all my visuals different and unique.
 # What I am most proud of in the assignment
